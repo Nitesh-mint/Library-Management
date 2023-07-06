@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-md-6 mx-auto">
+            {% include 'includes/alerts.html' %}
+            <form method="POST" action="{% url 'register' %}">
+                {% csrf_token %}
+                {{form.as_p}}
+                <input type="submit" class="btn btn-success" value="Register">
+            </form>
+            <p class="mt-3">Already got an account? <a class="btn btn-primary" href="{% url 'login' %}"> <i class="bi bi-box-arrow-in-right"></i> Login</a></p>
+        </div>
+    </div>
+</div>
+{% endblock content %}
