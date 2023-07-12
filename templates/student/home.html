@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+{% block content %}
+{% include 'includes/navbar.html' %}
+<div class="container-fluid">
+        {% include 'includes/alerts.html' %}
+<img src="https://www.yogamotion.com/wp-content/uploads/2015/03/BANNER-Books-V2.jpg" class="img-fluid rounded"> 
+    <div class="row mt-5">
+        <a href="{% url 'available_books' %}">Available Books</a>
+    </div>
+</div>
+</div>
+{% endblock content %}

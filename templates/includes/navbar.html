@@ -1,7 +1,12 @@
 <nav class="navbar navbar-expand-lg bg-light mb-5" data-bs-theme="light">
   <div class="container-fluid">
-    <a class="navbar-brand" href="{% url 'home' %}"><img
-        src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAYAAAAeP4ixAAAACXBIWXMAAAsTAAALEwEAmpwYAAABF0lEQVR4nO2XsQrCMBRFz66fUGdHNwXRj/Q3RNz0i1wd7CTYNCJ0cXDJe695jTmQqfDIyW3pDVR8swBOQAtE42UqcR9BwFzkNKKEqUhbikgsXWQrmLnzJCKliqTS/zi9z+uRyt5TIrGUjz1OTaRX2uATOAAbYGa5YUuRG7AiM0EhiZWH8hmEAw9eymcQDlx7KZ9BOHDupXwGpYGxdJEtI5XPYCwiJf6dSKckkr18BuNErJZZIsWI9FWEmsgXr+FELkBDOsGLSCOQcCHSliJyHh5chzvFZEWWwguRGxGG1+oIPAQDOw8iGrhIRIMqgrNEivlGuipCTcQErfKZHa3ymR2t8pkdrfKZHWn5jF7+I9LyGT2JVEjkDfIXCgxsbEzuAAAAAElFTkSuQmCC"></a>
+    {% if user.is_admin %}
+      <a class="navbar-brand" href="{% url 'admin_home' %}"><img
+          src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAYAAAAeP4ixAAAACXBIWXMAAAsTAAALEwEAmpwYAAABF0lEQVR4nO2XsQrCMBRFz66fUGdHNwXRj/Q3RNz0i1wd7CTYNCJ0cXDJe695jTmQqfDIyW3pDVR8swBOQAtE42UqcR9BwFzkNKKEqUhbikgsXWQrmLnzJCKliqTS/zi9z+uRyt5TIrGUjz1OTaRX2uATOAAbYGa5YUuRG7AiM0EhiZWH8hmEAw9eymcQDlx7KZ9BOHDupXwGpYGxdJEtI5XPYCwiJf6dSKckkr18BuNErJZZIsWI9FWEmsgXr+FELkBDOsGLSCOQcCHSliJyHh5chzvFZEWWwguRGxGG1+oIPAQDOw8iGrhIRIMqgrNEivlGuipCTcQErfKZHa3ymR2t8pkdrfKZHWn5jF7+I9LyGT2JVEjkDfIXCgxsbEzuAAAAAElFTkSuQmCC"></a>
+    {% else %}
+      <a class="navbar-brand" href="{% url 'student_home' %}"><img
+          src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAYAAAAeP4ixAAAACXBIWXMAAAsTAAALEwEAmpwYAAABF0lEQVR4nO2XsQrCMBRFz66fUGdHNwXRj/Q3RNz0i1wd7CTYNCJ0cXDJe695jTmQqfDIyW3pDVR8swBOQAtE42UqcR9BwFzkNKKEqUhbikgsXWQrmLnzJCKliqTS/zi9z+uRyt5TIrGUjz1OTaRX2uATOAAbYGa5YUuRG7AiM0EhiZWH8hmEAw9eymcQDlx7KZ9BOHDupXwGpYGxdJEtI5XPYCwiJf6dSKckkr18BuNErJZZIsWI9FWEmsgXr+FELkBDOsGLSCOQcCHSliJyHh5chzvFZEWWwguRGxGG1+oIPAQDOw8iGrhIRIMqgrNEivlGuipCTcQErfKZHa3ymR2t8pkdrfKZHWn5jF7+I9LyGT2JVEjkDfIXCgxsbEzuAAAAAElFTkSuQmCC"></a>
+    {% endif %}
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarColor03"
       aria-controls="navbarColor03" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
@@ -9,23 +14,47 @@
     <div class="collapse navbar-collapse" id="navbarColor03">
       <ul class="navbar-nav me-auto">
         <li class="nav-item">
-          <a class="nav-link active" href="{% url 'home' %}">Home
-          </a>
+          {% if user.is_admin %}
+            <a class="nav-link " href="{% url 'admin_home' %}"> <i class="bi bi-house-door-fill"></i> Home </a>
+          {% else %}
+            <a class="nav-link " href="{% url 'student_home' %}">Home </a>
+          {% endif %}
         </li>
+        {% if user.is_admin %}
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'add_book' %}"> <i class="bi bi-plus-circle-fill"></i> Add Book</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'students' %}"> <i class="bi bi-view-list"></i> Students</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'issueRequests' %}"> <i class="bi bi-view-list"></i> Requests</a>
+          </li>
+        {% else %}
+          <li>
+            <a class="nav-link" href="{% url 'available_books' %}">Available Books</a>
+          </li>
+          <li>
+            <a class="nav-link" href="{% url 'issuebook' %}">Issue Book</a>
+          </li>
+          <li>
+            <a class="nav-link" href="{% url 'mybooks' %}">My Books</a>
+          </li>
+        {% endif %}
       </ul>
-      <form class="d-flex me-auto">
+      <!-- <form class="d-flex me-auto">
         <input class="form-control me-sm-2" type="search" placeholder="Search">
         <button class="btn btn-outline-dark my-2 my-sm-0" type="submit">Search</button>
-      </form>
+      </form> -->
       <ul class="navbar-nav">
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true"
             aria-expanded="false">Hello {% if user.is_authenticated %}{{user.first_name}} {% else %} User {% endif %}</a>
           <div class="dropdown-menu">
             {% if user.is_authenticated %}
-              <a class="dropdown-item" href="{% url 'logout' %}">Logout</a>
+            <a class="dropdown-item" href="{% url 'logout' %}"> <i class="bi bi-box-arrow-left"></i> Logout</a>
             {% else %}
-              <a class="dropdown-item" href="{% url 'login' %}">login</a>
+            <a class="dropdown-item" href="{% url 'login' %}"> <i class="bi bi-box-arrow-in-right"></i> login</a>
             {% endif %}
           </div>
         </li>

@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    {% include 'includes/navbar.html' %}
+    <div class="container m-5">
+        <p class="fw-bold text-center"> <i class="bi bi-person-fill"></i> Students</p>
+    <table class="table border border-dark table-hover">
+        <thead>
+            <tr>
+                <th scope="col"> <i class="bi bi-person-lines-fill"></i> Name</th>
+                <th scope="col"> <i class="bi bi-envelope-at-fill"></i> Email</th>
+                <th scope="col"> <i class="bi bi-arrows-expand"></i> Level</th>
+                <th scope="col"> <i class="bi bi-pencil-square"></i> Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for student in students %}
+            <tr>
+                <td>{{student.first_name}}</td>
+                <td>{{student.email}}</td>
+                <td>{{student.level}}</td>
+                <td><a class="btn btn-sm btn-danger" href="{% url 'delete_student' student.id %}" onclick="return confirm('Are you sure want to delete?')"> <i class="bi bi-trash3-fill"></i> Delete</a></td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    </div>
+{% endblock content %}

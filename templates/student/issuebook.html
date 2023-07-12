@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+{% block content %}
+{% include 'includes/navbar.html' %}
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-8">
+            {% include 'includes/alerts.html' %}
+            <div class="alert alert-dismissible alert-success">
+                <i><strong>As a student you should request the book you want to get with the help of below form</strong></i>
+            </div>
+            <div class="card card-dark">
+                <div class="card-body">
+                    <form method="POST" action="{% url 'issuebook' %}">
+                        {% csrf_token %}
+                        {{form|crispy}}
+                        <input type="submit" value="Send Request" class="form-control btn btn-outline-success">
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}

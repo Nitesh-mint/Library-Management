@@ -9,12 +9,18 @@ class RegisterForm(forms.ModelForm):
 
     class Meta:
         model = Account
-        fields = ['first_name','email']
+        fields = ['first_name','email','level', 'roll_number']
 
     def __init__(self, *args, **kwargs):
         super(RegisterForm, self).__init__(*args, **kwargs)
         self.fields['email'].widget.attrs['class'] = 'form-control'
         self.fields['first_name'].widget.attrs['class'] = 'form-control'
+        self.fields['first_name'].widget.attrs['required'] = True
+        self.fields['level'].widget.attrs['class'] = 'form-control'
+        self.fields['level'].widget.attrs['required'] = True
+        self.fields['roll_number'].widget.attrs['class'] = 'form-control'
+        self.fields['roll_number'].widget.attrs['required'] = True
+
 
     def clean(self):
         cleaned_data = super(RegisterForm, self).clean()

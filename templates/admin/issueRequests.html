@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    {% include 'includes/navbar.html' %}
+    <div class="container m-5">
+        {% include 'includes/alerts.html' %}
+    {% if requests %}
+            <p class="fw-bold text-center"> <i class="bi bi-person-fill"></i> Book Issue Requests</p>
+        <table class="table border border-dark table-hover">
+            <thead>
+                <tr>
+                    <th scope="col"> <i class="bi bi-person-lines-fill"></i> Student</th>
+                    <th scope="col"> <i class="bi bi-book-half"></i> Book</th>
+                    <th scope="col"> <i class="bi bi-arrows-expand"></i> Level</th>
+                    <th scope="col"> <i class="bi bi-pencil-square"></i> Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for request in requests %}
+                <tr>
+                    <td>{{request.student.first_name}}</td>
+                    <td>{{request.book.name}}</td>
+                    <td>{{request.student.level}}</td>
+                    <td><a class="btn btn-sm btn-info" href="{% url 'issueBookToStudent' request.student.id request.book.id %}">Accept Issue</a></td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p class="fs-4 text-center"><i><strong>No Books requests here!</strong></i></p>
+    {% endif %}
+    </div>
+{% endblock content %}

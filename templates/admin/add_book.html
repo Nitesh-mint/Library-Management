@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+{% block content %}
+{% include 'includes/navbar.html' %}
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-8">
+            <div class="alert alert-dismissible alert-info">
+                <i><strong>You can only select the available categories. Only superadmin can add categories</strong></i>
+            </div>
+            <div class="card card-light">
+                <div class="card-body">
+                    <div class="card-title"> <i class="bi bi-file-plus-fill"></i> Add Book</div>
+                    <form method="POST">
+                        {% csrf_token %}
+                        {{form|crispy}}
+                        <input class="form-control" type="submit" name="submit" value="Add Book">
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}

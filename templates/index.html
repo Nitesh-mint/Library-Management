@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-md-6">
+            <div class="card border-light mb-3">
+                <h3 class="card-header bi-text-center">Login as admin</h3>
+                <center><img src="{% static 'images/admin.png' %}" class="img-fluid" width="140px"></center>
+                <div class="card-body">
+                    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the
+                        card's content.</p>
+                </div>
+                <a href="{% url 'admin_login' %}" class="list-group-lg btn btn-lg btn-danger">Go to Login</a>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card border-light mb-3">
+                <h3 class="card-header bi-text-center">Login as student</h3>
+                <center><img src="{% static 'images/students.png' %}" class="img-fluid" width="129px"></center>
+                <div class="card-body">
+                    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the
+                        card's content.</p>
+                </div>
+                <a href="{% url 'login' %}" class="list-group-lg btn btn-lg btn-primary">Go to Login</a>
+                <a href="{% url 'register' %}" class="list-group-lg btn btn-lg btn-success mt-2">Create an account</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}

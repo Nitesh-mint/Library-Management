@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-7">
+            <span class="badge rounded-pill bg-danger mb-3">Only admin can login</span>
+            <h4 class="fw-bolder">Admin Login</h4>
+            <form method="POST" action="{% url 'admin_login' %}">
+                {% csrf_token %}
+                <label>Email</label>
+                <input type="text" class="form-control" name="email">
+                <label>password</label>
+                <input type="password" class="form-control" name="password">
+                <input type="submit" class="btn btn-outline-success mt-3" value="Login">
+            </form>
+            <p class="mt-2">Student? <a href="{% url 'login' %}" class="btn btn-link"> <i
+                        class="bi bi-person-check"></i> Login here</a></p>
+            {% include 'includes/alerts.html' %}
+        </div>
+    </div>
+</div>
+{% endblock content %}
