@@ -1,4 +1,6 @@
 from django.db import models
+
+
 from datetime import date, timedelta
 
 from Accounts.models import Account
@@ -33,9 +35,18 @@ class IssueRequest(models.Model):
 def expiry():
     return date.today() + timedelta(days=30)
 
+
 class IssuedBooks(models.Model):
     issuerequest = models.ForeignKey(IssueRequest, on_delete=models.CASCADE)
     issuedby = models.ForeignKey(Account, on_delete=models.CASCADE)
     issued_date = models.DateField(auto_now=True)
     expiry_date = models.DateField(default=expiry)
+    fine = models.PositiveIntegerField(default=0)
 
+
+    def save(self, *args, **kwargs):
+        today = date.today()
+        if today > self.expiry_date:
+            days_overdue = (today - self.expiry_date).days
+            self.fine += days_overdue * 5
+        super().save(*args, **kwargs)

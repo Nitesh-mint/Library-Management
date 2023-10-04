@@ -4,30 +4,37 @@
     {% include 'includes/navbar.html' %}
     <div class="container">
         {% include 'includes/alerts.html' %}
-        <p class="fw-bold text-center">Available books</p>
-        <table class="table border border-dark table-hover">
-            <thead>
-                <tr>
-                    <th scope="col"> <i class="bi bi-book-fill"></i> Name</th>
-                    <th scope="col"> <i class="bi bi-person-circle"></i> Author</th>
-                    <th scope="col"> <i class="bi bi-three-dots-vertical"></i> Category</th>
-                    <th scope="col"> <i class="bi bi-three-dots-vertical"></i> Expiry Date</th>
-                    <th scope="col"> <i class="bi bi-three-dots-vertical"></i> Fine</th>
-                    <th scope="col"> <i class="bi bi-pencil-square"></i> Action</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for book in mybooks %}
-                <tr>
-                    <td>{{book.issuerequest.book.name}}</td>
-                    <td>{{book.issuerequest.book.author}}</td>
-                    <td>{{book.issuerequest.book.categories}}</td>
-                    <td>{{book.expiry_date}}</td>
-                    <td>0</td>
-                    <td>Action</td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
+        {% if mybooks %}
+            <p class="fw-bold text-center">Available books</p>
+            <table class="table border border-dark table-hover">
+                <thead>
+                    <tr>
+                        <th scope="col"> <i class="bi bi-book-fill"></i> Name</th>
+                        <th scope="col"> <i class="bi bi-person-circle"></i> Author</th>
+                        <th scope="col"> <i class="bi bi-three-dots-vertical"></i> Category</th>
+                        <th scope="col"> <i class="bi bi-three-dots-vertical"></i> Expiry Date</th>
+                        <th scope="col"> <i class="bi bi-three-dots-vertical"></i> Fine</th>
+                        <th scope="col" colspan="2"c class="text-center"> <i class="bi bi-pencil-square"></i> Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for book in mybooks %}
+                    <tr>
+                        <td>{{book.issuerequest.book.name}}</td>
+                        <td>{{book.issuerequest.book.author}}</td>
+                        <td>{{book.issuerequest.book.categories}}</td>
+                        <td>{{book.expiry_date}}</td>
+                        <td>{{book.fine}}</td>
+                        {% if book.fine %}
+                            <td><a href="{% url 'renew' book.id %}" class="btn btn-sm btn-danger">Renue</a></td>
+                        {% endif %}
+                        <td><a href="{% url 'return' book.id %}" class="btn btn-sm btn-success">Return</a></td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+            <p class="text-center"><strong><i>You don't have any books issued!</i></strong></p>
+        {% endif %}
     </div>
 {% endblock content %}

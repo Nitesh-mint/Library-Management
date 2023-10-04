@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import user_passes_test
 from django.contrib import messages
+from datetime import date, timedelta
 
 from .models import Book, IssueRequest, IssuedBooks
 from .forms import AddBook, IssueBookForm
@@ -39,7 +40,15 @@ def add_book(request):
 
 @user_passes_test(lambda user:not user.is_admin)
 def available_books(request):
-    books = Book.objects.all()
+    book = Book.objects.filter(quantity=0)
+    issuedBookByCurrentStudent = IssueRequest.objects.filter(student=request.user)
+    ids = []
+    for i in issuedBookByCurrentStudent:
+        ids.append(i.book.id)
+    for i in book:
+        ids.append(i.id)
+    books = Book.objects.exclude(id__in=ids)
+
     return render(request, 'student/books.html',{'books':books,'user':request.user})
 
 
@@ -100,7 +109,7 @@ def issueBookToStudent(request,student_id, book_id):
         issueAccept.save()
         issurequest.is_issued = True
         issurequest.save()
-        book_object.quantity -1 
+        book_object.quantity -= 1 
         book_object.save()
         messages.success(request, "Book issued to student succesfully!")
     except KeyError as e:
@@ -111,7 +120,33 @@ def issueBookToStudent(request,student_id, book_id):
 @user_passes_test(lambda user:not user.is_admin)
 def myBooks(request):
     student = request.user
-    mybooks = IssuedBooks.objects.filter(issuedby=student)
-    for b in mybooks:
-        print(b.issuerequest.book.name)
+    mybooks = IssuedBooks.objects.filter(issuedby=student).order_by('expiry_date')
     return render(request, "student/mybooks.html",{'mybooks':mybooks})
+
+
+def renewBook(request, issuedBook_id):
+    book = IssuedBooks.objects.get(id=issuedBook_id)
+    if book.fine > 0:
+        book.expiry_date = date.today() + timedelta(days=30)
+        book.fine = 0
+        book.save()
+        messages.success(request, "Book renued succesfully!")
+    else:
+        messages.error(request, "Failed to renue book!")
+    
+    return redirect("mybooks")
+
+
+def returnBook(request, issuedBook_id):
+    issuedbook = IssuedBooks.objects.get(id=issuedBook_id)
+    book = Book.objects.get(id=issuedbook.issuerequest.book.id)
+    issurequest = IssueRequest.objects.get(book=book, student=request.user)
+    try:
+        book.quantity += 1
+        book.save()
+        issurequest.delete()
+        messages.success(request, "Book returned to the administration")
+    except:
+        messages.error(request, "Failed to return the book!")
+
+    return redirect("mybooks")
